@@ -1,0 +1,164 @@
+<style>
+  body {
+    background-color: #f8fafc; 
+    margin: 0;
+    padding: 20px;
+  }
+  .vacancy-list-container {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    max-width: 1000px; 
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Space between list items */
+  }
+  .vacancy-item {
+    background: #ffffff;
+    border: 1px solid #e8eaf0;
+    border-left: 6px solid #0069fa; /* Sunderland blue accent stripe */
+    border-radius: 8px;
+    padding: 20px 25px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none !important;
+    color: inherit !important;
+    display: block;
+  }
+  .vacancy-item:hover {
+    transform: translateX(6px); /* Smooth slide to the right */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .vacancy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 12px;
+  }
+  .vacancy-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+    flex: 1; /* Pushes the date pill to the right */
+    min-width: 250px;
+  }
+  .vacancy-date {
+    font-size: 0.85rem;
+    color: #c2410c; /* A slightly warmer color to signify urgency */
+    background: #ffedd5;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap; /* Stops the date text from wrapping to two lines */
+  }
+  .vacancy-desc {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+  }
+  
+  /* --- Styling the built-in TargetConnect HTML --- */
+  .feed-entry-label {
+    font-weight: 600;      
+    color: #1e293b;
+  }
+  .feed-entry {
+    display: block;
+    margin-bottom: 6px;    
+  }
+  .vacancy-desc br { 
+    display: none; 
+  }
+  
+  .loading-text {
+    text-align: center;
+    color: #64748b;
+    font-style: italic;
+  }
+</style>
+
+<div class="vacancy-list-container" id="vacancy-feed-container">
+   <p class="loading-text">Loading latest vacancies...</p>
+</div>
+
+<script>
+  const rssUrl = 'https://sunderland.targetconnect.net/content/rss/allvacanciesdigiscreen';
+  const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(rssUrl)}`;
+
+  fetch(proxyUrl)
+    .then(response => {
+      if (!response.ok) throw new Error('Network response was not ok');
+      return response.text(); 
+    })
+    .then(str => {
+      const container = document.getElementById('vacancy-feed-container');
+      container.innerHTML = ''; 
+      
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(str, "text/xml");
+      const items = xmlDoc.querySelectorAll("item");
+
+      if (!items || items.length === 0) {
+         container.innerHTML = '<p class="loading-text">No vacancies found at this time.</p>';
+         return;
+      }
+
+      // Loop through the first 6 vacancies
+      Array.from(items).slice(0, 6).forEach(item => {
+        
+        const title = item.querySelector("title") ? item.querySelector("title").textContent : "Vacancy";
+        const link = item.querySelector("link") ? item.querySelector("link").textContent : "#";
+
+        let rawDescription = item.querySelector("description") ? item.querySelector("description").textContent : "";
+        if (!rawDescription.includes("<span") && item.querySelector("description") && item.querySelector("description").innerHTML.includes("<span")) {
+            rawDescription = item.querySelector("description").innerHTML;
+        }
+
+        // Smart Search for "Closing Date" and "Title"
+        let highlightedDate = "";
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = rawDescription;
+        
+        const labels = tempDiv.querySelectorAll('.feed-entry-label');
+        labels.forEach(label => {
+            const labelText = label.textContent.toLowerCase();
+            
+            // Extract the Closing Date
+            if (labelText.includes('closing date')) {
+                const valueSpan = label.parentElement.querySelector('.feed-entry-value');
+                if (valueSpan) {
+                    highlightedDate = valueSpan.textContent.trim();
+                }
+                label.parentElement.style.display = 'none'; 
+            }
+            
+            // Hide the duplicate Title
+            if (labelText.includes('title')) {
+                label.parentElement.style.display = 'none';
+            }
+        });
+
+        rawDescription = tempDiv.innerHTML;
+
+        // Build the HTML list item with the new side-by-side header
+        const card = `
+          <a href="${link}" target="_blank" class="vacancy-item">
+            <div class="vacancy-header">
+                <h3 class="vacancy-title">${title}</h3>
+                ${highlightedDate ? `<span class="vacancy-date">⏳ Closes: ${highlightedDate}</span>` : ''}
+            </div>
+            <div class="vacancy-desc">${rawDescription}</div>
+          </a>
+        `;
+        
+        container.innerHTML += card;
+      });
+    })
+    .catch(error => {
+      document.getElementById('vacancy-feed-container').innerHTML = '<p class="loading-text">Sorry, error loading vacancies.</p>';
+      console.error('Error fetching RSS:', error);
+    });
+</script>
