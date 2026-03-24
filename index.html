@@ -57,10 +57,12 @@
     font-weight: 600;      
     color: #1e293b;
   }
-  /* Hides the duplicate "Title" and the new "Closest Future Date" from the main text block */
-  .entry-name, .entry-dynamicstrings_days {
+  
+  /* UPDATED: Added .entry-toDate to hide the End Date from the main text block! */
+  .entry-name, .entry-dynamicstrings_days, .entry-toDate {
     display: none !important;         
   }
+  
   .feed-entry {
     display: block;
     margin-bottom: 8px;    
@@ -114,7 +116,7 @@
             rawDescription = item.querySelector("description").innerHTML;
         }
 
-        // --- UPDATED: Extract the Closest Future Date out of the description for our pill ---
+        // Extract the Closest Future Date out of the description for our pill
         let highlightedDate = "";
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = rawDescription;
@@ -123,7 +125,7 @@
             highlightedDate = dateSpan.textContent.trim(); 
         }
 
-        // Build the HTML card with the newly extracted date in the pill
+        // Build the HTML card
         const card = `
           <a href="${link}" target="_blank" class="event-card">
             <h3 class="event-title">${title}</h3>
