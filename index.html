@@ -57,8 +57,8 @@
     font-weight: 600;      
     color: #1e293b;
   }
-  /* Hides the duplicate "Title" and "Start Date" from the main text block */
-  .entry-name, .entry-fromDate {
+  /* Hides the duplicate "Title" and the new "Closest Future Date" from the main text block */
+  .entry-name, .entry-dynamicstrings_days {
     display: none !important;         
   }
   .feed-entry {
@@ -114,20 +114,20 @@
             rawDescription = item.querySelector("description").innerHTML;
         }
 
-        // Extract the Start Date out of the description for our pill
-        let actualStartDate = "";
+        // --- UPDATED: Extract the Closest Future Date out of the description for our pill ---
+        let highlightedDate = "";
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = rawDescription;
-        const startDateSpan = tempDiv.querySelector('.entry-fromDate .feed-entry-value');
-        if (startDateSpan) {
-            actualStartDate = startDateSpan.textContent.trim(); 
+        const dateSpan = tempDiv.querySelector('.entry-dynamicstrings_days .feed-entry-value');
+        if (dateSpan) {
+            highlightedDate = dateSpan.textContent.trim(); 
         }
 
-        // Build the HTML card with the real date in the highlighted pill
+        // Build the HTML card with the newly extracted date in the pill
         const card = `
           <a href="${link}" target="_blank" class="event-card">
             <h3 class="event-title">${title}</h3>
-            ${actualStartDate ? `<span class="event-date">📅 ${actualStartDate}</span>` : ''}
+            ${highlightedDate ? `<span class="event-date">📅 ${highlightedDate}</span>` : ''}
             <div class="event-desc">${rawDescription}</div>
           </a>
         `;
