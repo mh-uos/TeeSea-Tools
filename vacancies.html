@@ -114,7 +114,10 @@
 </div>
 
 <script>
-  const rssUrl = 'https://sunderland.targetconnect.net/content/rss/allvacanciesdigiscreen';
+  // NEW CACHE-BUSTER: Generates a unique timestamp to force a live refresh
+  const cacheBuster = new Date().getTime(); 
+  const rssUrl = `https://sunderland.targetconnect.net/content/rss/allvacanciesdigiscreen?cb=${cacheBuster}`;
+  
   const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(rssUrl)}`;
 
   fetch(proxyUrl)
@@ -135,8 +138,8 @@
          return;
       }
 
-      // Loop through the first 6 vacancies (Change the 6 to 10 or 15 if you want more!)
-      Array.from(items).slice(0, 6).forEach(item => {
+      // Loop through the first 10 vacancies
+      Array.from(items).slice(0, 10).forEach(item => {
         
         const title = item.querySelector("title") ? item.querySelector("title").textContent : "Vacancy";
         const link = item.querySelector("link") ? item.querySelector("link").textContent : "#";
