@@ -11,7 +11,6 @@
     max-width: 1200px; 
     margin: 0 auto;
     display: grid;
-    /* Adjusts grid slightly to accommodate the wider horizontal layout */
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
     gap: 20px;
   }
@@ -25,7 +24,7 @@
     text-decoration: none !important;
     color: inherit !important;
     display: flex;
-    flex-direction: row; /* Puts calendar and content side-by-side */
+    flex-direction: row; 
     gap: 20px;
     height: 100%; 
     box-sizing: border-box;
@@ -35,7 +34,7 @@
     box-shadow: 0 6px 16px rgba(0,0,0,0.1);
   }
 
-  /* --- NEW: Calendar Block Styling --- */
+  /* --- Calendar Block Styling --- */
   .calendar-block {
     min-width: 70px;
     max-width: 70px;
@@ -45,10 +44,10 @@
     overflow: hidden;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    flex-shrink: 0; /* Prevents the calendar from squishing */
+    flex-shrink: 0; 
   }
   .cal-month {
-    background-color: #0069fa; /* Sunderland Blue */
+    background-color: #0069fa; 
     color: #ffffff;
     font-size: 0.8rem;
     font-weight: 700;
@@ -69,6 +68,8 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    /* FIX: This forces the container to respect its boundaries so long pills don't break out! */
+    min-width: 0; 
   }
   .event-title {
     font-size: 1.2rem;
@@ -97,9 +98,8 @@
     text-overflow: ellipsis; 
     box-sizing: border-box;
   }
-  .pill-time { background: #fee2e2; color: #991b1b; } /* Red for Time */
-  .pill-type { background: #dbeafe; color: #1e40af; } /* Blue for Event Type */
-  .pill-location { background: #ffedd5; color: #c2410c; } /* Orange for Location */
+  .pill-time { background: #fee2e2; color: #991b1b; } 
+  .pill-location { background: #ffedd5; color: #c2410c; } 
 
   .event-desc {
     font-size: 0.9rem;
@@ -149,8 +149,8 @@
         let rawDescription = item.description || "";
 
         let highlightedDate = "";
-        let eventType = "";
         let location = "";
+        let cleanExtractedDesc = "";
 
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = rawDescription;
@@ -159,20 +159,20 @@
         const dateSpan = tempDiv.querySelector('.entry-dynamicstrings_days .feed-entry-value');
         if (dateSpan) highlightedDate = dateSpan.textContent.trim(); 
 
-        // 2. Parse out Event Type and Location for pills
+        // 2. Parse out Location and isolate the pure Description text
         const labels = tempDiv.querySelectorAll('.feed-entry-label');
         labels.forEach(label => {
             const labelText = label.textContent.toLowerCase();
             const valueSpan = label.parentElement.querySelector('.feed-entry-value');
             
-            if (labelText.includes('event type')) {
-                if (valueSpan) eventType = valueSpan.textContent.trim();
-                label.parentElement.style.display = 'none'; 
-            } else if (labelText.includes('location')) {
+            if (labelText.includes('location')) {
                 if (valueSpan) location = valueSpan.textContent.trim();
                 label.parentElement.style.display = 'none'; 
-            } else if (labelText.includes('brief description')) {
-                label.style.display = 'none'; 
+            } 
+            // This isolates the actual description and removes the row containing the stray colon!
+            else if (labelText.includes('description')) {
+                if (valueSpan) cleanExtractedDesc = valueSpan.innerHTML.trim();
+                label.parentElement.style.display = 'none'; 
             }
         });
 
@@ -182,26 +182,26 @@
         let timeString = "";
 
         if (highlightedDate) {
-            // Example input: "22-Apr-2026 at 11:00 - 13:00"
             let cleanDate = highlightedDate.replace(' at ', ' ');
             let parts = cleanDate.split(' '); 
             
-            // Extracts Day and Month
             let dateSegments = parts[0].split('-'); 
             if (dateSegments.length >= 2) {
                 calDay = dateSegments[0];
                 calMonth = dateSegments[1];
             }
             
-            // Extracts Time
             if (parts.length > 1) {
                 timeString = parts.slice(1).join(' ');
             }
         }
 
-        rawDescription = tempDiv.innerHTML;
+        // Use the pure description we extracted. If it couldn't find one, fallback to the cleaned HTML.
+        rawDescription = cleanExtractedDesc || tempDiv.innerHTML;
+        // Clean up any stray colons or spaces right at the start just to be completely safe
+        rawDescription = rawDescription.replace(/^[ :\s]+/, '');
 
-        // Build the HTML card with the new Calendar visual
+        // Build the HTML card
         const card = `
           <a href="${link}" target="_blank" class="event-card">
             
@@ -215,7 +215,6 @@
                 
                 <div class="event-pills-container">
                     ${timeString ? `<span class="pill pill-time">⏰ ${timeString}</span>` : ''}
-                    ${eventType ? `<span class="pill pill-type">🎯 ${eventType}</span>` : ''}
                     ${location ? `<span class="pill pill-location">📍 ${location}</span>` : ''}
                 </div>
 
