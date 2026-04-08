@@ -171,6 +171,62 @@
             margin-top: 40px;
             border-top: 1px solid #e2e8f0;
         }
+
+        /* --- Modal Styles --- */
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(15, 23, 42, 0.7); 
+            backdrop-filter: blur(3px); 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .modal-content { 
+            background-color: #ffffff; 
+            padding: 40px 30px; 
+            border-radius: 12px; 
+            max-width: 400px; 
+            width: 90%; 
+            position: relative; 
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .close-modal { 
+            position: absolute; 
+            right: 20px; 
+            top: 15px; 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            color: #94a3b8; 
+            transition: color 0.2s;
+        }
+        .close-modal:hover { color: #0f172a; }
+        
+        .contact-link { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            background: #f8fafc; 
+            color: #0f172a; 
+            text-decoration: none; 
+            padding: 14px; 
+            border-radius: 8px; 
+            margin-top: 15px; 
+            font-weight: bold; 
+            transition: background 0.2s, transform 0.1s; 
+            border: 1px solid #e2e8f0;
+        }
+        .contact-link:hover { 
+            background: #e2e8f0; 
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -183,7 +239,7 @@
             
             <div class="header-actions">
                 <span class="badge">Open Source Hub</span>
-                <a href="mailto:mike.henson@sunderland.ac.uk" class="contact-btn">✉️ Contact Me</a>
+                <button class="contact-btn" onclick="openContactModal()">✉️ Contact Me</button>
             </div>
         </div>
     </div>
@@ -194,35 +250,35 @@
             
             <div class="card">
                 <div class="card-icon">🛠️</div>
-                <h2>Universal Custom Pane Maker</h2>
+                <h2>Custom Pane Maker</h2>
                 <p>Generate responsive, dynamic HTML banners for your portal. Easily segment who sees what using Apache Velocity logic and user tags—no coding required.</p>
                 <a href="TC-Custom-Pane-Builder.html" class="btn">Launch Maker</a>
             </div>
 
             <div class="card">
                 <div class="card-icon">📆</div>
-                <h2>Interactive Event Calendar Maker</h2>
+                <h2>Event Calendar Widget Maker</h2>
                 <p>Create a branded monthly calendar view for your students. Paste your RSS feed URL and customize the colors to generate an interactive, live-synced calendar widget.</p>
                 <a href="event-cal-builder.html" class="btn">Launch Maker</a>
             </div>
 
             <div class="card">
                 <div class="card-icon">✏️</div>
-                <h2>Event HTML Builder</h2>
+                <h2>Event Description HTML Builder</h2>
                 <p>Ensure your event descriptions always look perfectly formatted. This tool turns basic text inputs into highly styled, responsive HTML ready to paste directly into the system.</p>
                 <a href="event-builder.html" class="btn">Launch Maker</a>
             </div>
 
             <div class="card">
                 <div class="card-icon">📅</div>
-                <h2>Events List Widget Maker</h2>
+                <h2>Event RSS Reader</h2>
                 <p>Turn your Events RSS feed into a sleek, responsive card widget. Choose between a horizontal carousel, a grid, or a vertical list layout perfect for VLE integration.</p>
                 <a href="event-feed-builder.html" class="btn">Launch Maker</a>
             </div>
 
             <div class="card">
                 <div class="card-icon">💼</div>
-                <h2>Vacancies List Widget Maker</h2>
+                <h2>Vacancies RSS Reader</h2>
                 <p>Turn your Vacancies RSS feed into a sleek, responsive job board widget. Features dynamic deadline tracking, employer icons, and customizable layouts.</p>
                 <a href="vancancies-feed-builder.html" class="btn">Launch Maker</a>
             </div>
@@ -254,6 +310,39 @@
     <div class="footer">
         Built by Mike Henson. Open-source tools for Higher Education careers teams.
     </div>
+
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeContactModal()">✖</span>
+            <h2 style="margin-top: 0; color: #0f172a;">Let's Connect</h2>
+            <p style="color: #64748b; margin-bottom: 25px;">Feel free to reach out if you need help with these tools, have feature requests, or just want to chat about portal design!</p>
+            
+            <a href="mailto:mike.henson@sunderland.ac.uk" class="contact-link">
+                ✉️ mike.henson@sunderland.ac.uk
+            </a>
+            <a href="https://www.linkedin.com/in/mike-henson" target="_blank" class="contact-link">
+                💼 Connect on LinkedIn
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function openContactModal() {
+            document.getElementById('contact-modal').style.display = 'flex';
+        }
+        
+        function closeContactModal() {
+            document.getElementById('contact-modal').style.display = 'none';
+        }
+        
+        // Close modal if user clicks outside of the modal content box
+        window.onclick = function(event) {
+            const modal = document.getElementById('contact-modal');
+            if (event.target == modal) {
+                closeContactModal();
+            }
+        }
+    </script>
 
 </body>
 </html>
