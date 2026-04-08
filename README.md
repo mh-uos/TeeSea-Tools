@@ -1,12 +1,12 @@
-# 🛠️ TargetConnect Community Tools
+# 🛠️ TeeSea Community Tools
 
-Welcome to the **TargetConnect Community Tools** repository. This is an open-source collection of widgets, builders, and customization tools designed to help University Careers and Employability teams get the most out of the TargetConnect platform.
+Welcome to the **TeeSea Community Tools** repository. This is an open-source collection of widgets, builders, and customization tools designed to help University Careers and Employability teams get the most out of their platforms.
 
 ---
 
 ## 🚀 Live Access
 You can access the hosted, ready-to-use versions of these tools here:
-👉 **[View the Community Hub](https://mh-uos.github.io/TargetConnect-Tools/)**
+👉 **[View the Community Hub](https://mh-uos.github.io/TeeSea-Tools/)**
 
 ---
 
