@@ -428,65 +428,68 @@
                     if (template === 'gradient') { btnBg = txtColor; btnTxt = c1; }
                     else if (txtColor === '#1e293b') { btnTxt = '#ffffff'; }
                     
-                    return `<a href="${b.url}" style="flex: 1; min-width:120px; text-align: center; padding: 12px 20px; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 0.95rem; display: block; white-space: nowrap; background: ${btnBg}; color: ${btnTxt}; border: 1px solid ${btnBg}; transition: opacity 0.2s;">${b.txt}</a>`;
+                    // Added !important flags to explicitly override TargetConnect global stylesheet conflicts
+                    return `<a href="${b.url}" style="flex: 1 1 0% !important; min-width: 120px !important; text-align: center !important; padding: 12px 20px !important; border-radius: 6px !important; font-weight: bold !important; text-decoration: none !important; font-size: 0.95rem !important; display: block !important; white-space: nowrap !important; box-sizing: border-box !important; background: ${btnBg} !important; color: ${btnTxt} !important; border: 1px solid ${btnBg} !important; transition: opacity 0.2s;">${b.txt}</a>`;
                 }).join('');
-                buttonsHtml = `<div style="display: flex; gap: 12px; margin-top: 20px; width: 100%; flex-wrap: wrap; justify-content: stretch;">${btns}</div>`;
+                
+                // Flex container hardened against global CSS
+                buttonsHtml = `<div style="display: flex !important; flex-direction: row !important; gap: 12px !important; margin-top: 20px !important; width: 100% !important; flex-wrap: wrap !important; justify-content: stretch !important; align-items: center !important; box-sizing: border-box !important;">${btns}</div>`;
             }
 
             const cleanText = text.replace(/\n/g, '<br>');
 
             if (template === 'notice') {
-                const pillHtml = pill ? `<span style="display:inline-block; background:${c1}; color:#ffffff; padding: 4px 10px; border-radius:4px; font-size:0.8rem; font-weight:bold; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px;">🚨 ${pill}</span>` : '';
+                const pillHtml = pill ? `<span style="display:inline-block !important; background:${c1} !important; color:#ffffff !important; padding: 4px 10px !important; border-radius:4px !important; font-size:0.8rem !important; font-weight:bold !important; margin-bottom:12px !important; text-transform:uppercase !important; letter-spacing:1px !important;">🚨 ${pill}</span>` : '';
                 return `
-<div style="margin-bottom: 25px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-  <div style="background: ${c2}; border: 2px solid ${c1}; border-left: 8px solid ${c1}; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+<div style="margin-bottom: 25px !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; box-sizing: border-box !important;">
+  <div style="background: ${c2} !important; border: 2px solid ${c1} !important; border-left: 8px solid ${c1} !important; padding: 25px !important; border-radius: 8px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important; box-sizing: border-box !important;">
     ${pillHtml}
-    <h2 style="font-size: 1.6rem; font-weight: 800; margin: 0 0 8px 0; color: ${txtColor}; line-height: 1.2;">${title}</h2>
-    <p style="font-size: 1rem; margin: 0; color: ${txtColor}; opacity: 0.9; line-height: 1.5;">${cleanText}</p>
+    <h2 style="font-size: 1.6rem !important; font-weight: 800 !important; margin: 0 0 8px 0 !important; color: ${txtColor} !important; line-height: 1.2 !important;">${title}</h2>
+    <p style="font-size: 1rem !important; margin: 0 !important; color: ${txtColor} !important; opacity: 0.9 !important; line-height: 1.5 !important;">${cleanText}</p>
     ${buttonsHtml}
   </div>
 </div>`;
             } 
             else if (template === 'modern') {
-                const pillHtml = pill ? `<span style="display:inline-block; border: 1px solid ${c1}; color:${c1}; padding: 4px 15px; border-radius:20px; font-size:0.8rem; font-weight:bold; margin-bottom:15px; text-transform:uppercase; letter-spacing: 1px;">${pill}</span>` : '';
+                const pillHtml = pill ? `<span style="display:inline-block !important; border: 1px solid ${c1} !important; color:${c1} !important; padding: 4px 15px !important; border-radius:20px !important; font-size:0.8rem !important; font-weight:bold !important; margin-bottom:15px !important; text-transform:uppercase !important; letter-spacing: 1px !important;">${pill}</span>` : '';
                 return `
-<div style="margin-bottom: 25px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-  <div style="background: ${c2}; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+<div style="margin-bottom: 25px !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; box-sizing: border-box !important;">
+  <div style="background: ${c2} !important; padding: 30px !important; border-radius: 16px !important; box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important; box-sizing: border-box !important;">
     ${pillHtml}
-    <h2 style="font-size: 1.8rem; font-weight: 800; margin: 0 0 10px 0; color: ${txtColor}; line-height: 1.2; letter-spacing: -0.5px;">${title}</h2>
-    <p style="font-size: 1.05rem; margin: 0; color: ${txtColor}; opacity: 0.85; line-height: 1.6;">${cleanText}</p>
+    <h2 style="font-size: 1.8rem !important; font-weight: 800 !important; margin: 0 0 10px 0 !important; color: ${txtColor} !important; line-height: 1.2 !important; letter-spacing: -0.5px !important;">${title}</h2>
+    <p style="font-size: 1.05rem !important; margin: 0 !important; color: ${txtColor} !important; opacity: 0.85 !important; line-height: 1.6 !important;">${cleanText}</p>
     ${buttonsHtml}
   </div>
 </div>`;
             }
             else if (template === 'professional') {
-                const pillHtml = pill ? `<div style="color: ${c1}; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">${pill}</div>` : '';
+                const pillHtml = pill ? `<div style="color: ${c1} !important; font-size: 0.85rem !important; font-weight: 700 !important; text-transform: uppercase !important; letter-spacing: 1px !important; margin-bottom: 8px !important;">${pill}</div>` : '';
                 return `
-<div style="margin-bottom: 25px; font-family: Arial, Helvetica, sans-serif;">
-  <div style="background: ${c2}; padding: 30px; border-top: 5px solid ${c1}; border-radius: 4px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+<div style="margin-bottom: 25px !important; font-family: Arial, Helvetica, sans-serif !important; box-sizing: border-box !important;">
+  <div style="background: ${c2} !important; padding: 30px !important; border-top: 5px solid ${c1} !important; border-radius: 4px !important; border-left: 1px solid #e2e8f0 !important; border-right: 1px solid #e2e8f0 !important; border-bottom: 1px solid #e2e8f0 !important; box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important; box-sizing: border-box !important;">
     ${pillHtml}
-    <h2 style="font-size: 1.6rem; font-weight: bold; margin: 0 0 10px 0; color: ${txtColor}; line-height: 1.3;">${title}</h2>
-    <p style="font-size: 1rem; margin: 0; color: ${txtColor}; opacity: 0.9; line-height: 1.6;">${cleanText}</p>
+    <h2 style="font-size: 1.6rem !important; font-weight: bold !important; margin: 0 0 10px 0 !important; color: ${txtColor} !important; line-height: 1.3 !important;">${title}</h2>
+    <p style="font-size: 1rem !important; margin: 0 !important; color: ${txtColor} !important; opacity: 0.9 !important; line-height: 1.6 !important;">${cleanText}</p>
     ${buttonsHtml}
   </div>
 </div>`;
             }
             else if (template === 'gradient') {
-                const pillHtml = pill ? `<span style="display:inline-block; background:rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color:${txtColor}; padding: 4px 12px; border-radius:20px; font-size:0.8rem; font-weight:bold; margin-bottom:15px; text-transform:uppercase; letter-spacing: 0.5px;">✨ ${pill}</span>` : '';
+                const pillHtml = pill ? `<span style="display:inline-block !important; background:rgba(255,255,255,0.2) !important; border: 1px solid rgba(255,255,255,0.3) !important; color:${txtColor} !important; padding: 4px 12px !important; border-radius:20px !important; font-size:0.8rem !important; font-weight:bold !important; margin-bottom:15px !important; text-transform:uppercase !important; letter-spacing: 0.5px !important;">✨ ${pill}</span>` : '';
                 return `
-<div style="margin-bottom: 25px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-  <div style="background: linear-gradient(135deg, ${c1}, ${c2}); color: ${txtColor}; padding: 30px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.12);">
+<div style="margin-bottom: 25px !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; box-sizing: border-box !important;">
+  <div style="background: linear-gradient(135deg, ${c1}, ${c2}) !important; color: ${txtColor} !important; padding: 30px !important; border-radius: 12px !important; box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important; box-sizing: border-box !important;">
     ${pillHtml}
-    <h2 style="font-size: 1.8rem; font-weight: 800; margin: 0 0 10px 0; color: inherit; line-height: 1.2;">${title}</h2>
-    <p style="font-size: 1.05rem; margin: 0; color: inherit; opacity: 0.9; line-height: 1.6;">${cleanText}</p>
+    <h2 style="font-size: 1.8rem !important; font-weight: 800 !important; margin: 0 0 10px 0 !important; color: inherit !important; line-height: 1.2 !important;">${title}</h2>
+    <p style="font-size: 1.05rem !important; margin: 0 !important; color: inherit !important; opacity: 0.9 !important; line-height: 1.6 !important;">${cleanText}</p>
     ${buttonsHtml}
   </div>
 </div>`;
             }
             else if (template === 'image') {
-                const imageTag = imgUrl ? `<img src="${imgUrl}" alt="${title}" style="width: 100%; height: auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 15px;">` : `<div style="width:100%; height: 150px; background:#e2e8f0; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#64748b; margin-bottom:15px; font-weight:bold;">[Image Placeholder - Paste URL]</div>`;
+                const imageTag = imgUrl ? `<img src="${imgUrl}" alt="${title}" style="width: 100% !important; height: auto !important; display: block !important; border-radius: 8px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important; margin-bottom: 15px !important;">` : `<div style="width:100% !important; height: 150px !important; background:#e2e8f0 !important; border-radius:8px !important; display:flex !important; align-items:center !important; justify-content:center !important; color:#64748b !important; margin-bottom:15px !important; font-weight:bold !important;">[Image Placeholder - Paste URL]</div>`;
                 return `
-<div style="margin-bottom: 25px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+<div style="margin-bottom: 25px !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; box-sizing: border-box !important;">
   ${imageTag}
   ${buttonsHtml}
 </div>`;
@@ -554,15 +557,12 @@
 
             let vCode = "\n";
             allUsedTags.forEach(tag => { vCode += `#set($${safeVarName(tag)} = false)\n`; });
-            
-            // ADDED THE MISSING #end RIGHT HERE FOR THE #if STATEMENT
             vCode += `\n\n#foreach($tag in $user.Tags)\n`;
             Array.from(allUsedTags).forEach((tag, index) => {
                 const statement = index === 0 ? "#if" : "#elseif";
                 vCode += `  ${statement}($tag == '${tag}')\n    #set($${safeVarName(tag)} = true)\n`;
             });
             vCode += `  #end\n#end\n\n\n<div class="custom-pane-container">\n\n`;
-            
             segmentLogics.forEach((seg, idx) => {
                 const statement = idx === 0 ? "#if" : "#elseif";
                 vCode += `${statement}(${seg.condition})\n${seg.html}\n\n`;
