@@ -52,4 +52,14 @@ These tools are built **by the community, for the community**. If you have a fea
 **Email:** [mike.henson@sunderland.ac.uk](mailto:mike.henson@sunderland.ac.uk)  
 **Institution:** University of Sunderland
 
+## ⚖️ License & Usage
+
+This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** license. 
+
+**What this means:**
+- ✅ **Universities & Staff:** You are free to use, modify, and share these tools for your institution's internal use.
+- ❌ **Commercial Entities:** Use of this code within commercial products or for-profit services (including by platform providers like GTI/TargetConnect) is strictly prohibited without a separate commercial agreement.
+
 *Disclaimer: These tools are independent resources and are not officially affiliated with GTI or the TargetConnect platform.*
+
+
