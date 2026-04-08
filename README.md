@@ -1,6 +1,6 @@
 # 🛠️ TeeSea Community Tools
 
-Welcome to the **TeeSea Community Tools** repository. This is an open-source collection of widgets, builders, and customization tools designed to help University Careers and Employability teams get the most out of their platforms.
+Welcome to the **TeeSea Community Tools** repository. This is an open-source collection of widgets, builders, and customization tools designed to help University Careers and Employability teams get the most out of their careers portal.
 
 ---
 
@@ -15,16 +15,16 @@ You can access the hosted, ready-to-use versions of these tools here:
 ### 1. Universal Custom Pane Maker (`TC-Custom-Pane-Builder.html`)
 Generate responsive, targeted HTML banners using Apache Velocity logic. 
 * **Personalization:** segment who sees what based on user tags.
-* **Hardened CSS:** Uses table-based layouts to ensure TargetConnect's global CSS doesn't break your design.
+* **Hardened CSS:** Uses table-based layouts to ensure global portal CSS doesn't break your design.
 
 ### 2. Interactive Event Calendar Maker (`event-cal-builder.html`)
-Design a monthly calendar view that bridges the gap between TargetConnect and student portals.
+Design a monthly calendar view that bridges the gap between your careers portal and student VLEs.
 * **Customization:** Add your own RSS feed link and choose your institutional colors.
 * **Automation:** Once saved and hosted, the calendar populates itself dynamically via RSS.
 
 ### 3. Event HTML Builder (`event-builder.html`)
 Ensures your internal event descriptions always look premium and professional.
-* **Functionality:** Turns raw text into highly styled, branded HTML "pills" and formatted blocks.
+* **Functionality:** Turns raw text into highly styled, branded HTML "pills" and formatted blocks ready to be pasted directly into the backend.
 
 ### 4. Events List Widget Maker (`event-feed-builder.html`)
 Turn your Events RSS feed into a sleek, responsive card widget. 
@@ -40,7 +40,7 @@ Turn your Vacancies RSS feed into a modern, responsive job board widget.
 
 ## 📖 How to Use
 
-1. Visit the **[Live Hub](https://mh-ous.github.io/Target-Connect-Tools/)**.
+1. Visit the **[Live Hub](https://mh-uos.github.io/TeeSea-Tools/)**.
 2. For Maker tools: Configure your settings, paste your RSS link (if required), and click **Copy Widget HTML Code**.
 3. Save the generated code as an `.html` file (e.g., `index.html` or `widget.html`).
 4. Host the file securely on a web server (HTTPS) or GitHub Pages.
@@ -62,4 +62,4 @@ This project is licensed under the **Creative Commons Attribution-NonCommercial 
 
 Maintainer: **Mike Henson** Email: [mike.henson@sunderland.ac.uk](mailto:mike.henson@sunderland.ac.uk)  
 
-*Disclaimer: These tools are independent resources and are not officially affiliated with GTI or the Target Connect Platform.*
+*Disclaimer: These tools are independent resources built for the Higher Education community and are not officially affiliated with any third-party platform or vendor.*
