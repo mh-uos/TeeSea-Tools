@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vacancies RSS List Widget Maker</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 0; }
+        
+        /* --- Tool Header --- */
+        .tool-header { 
+            background-color: #0069fa; 
+            background-image: url('https://cdn.groupgti.com/unlayer/ul8009g9t9i94007muadib91/1773744597981-Corner-Sparks-green.png'); 
+            background-position: right center; 
+            background-repeat: no-repeat; 
+            background-size: contain; 
+            color: #ffffff; 
+            padding: 20px 40px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        }
+        .header-divider { height: 2px; background-color: #ffffff; width: 100%; max-width: 650px; margin: 10px 0; }
+        .badge { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+
+        /* --- Layout --- */
+        .workspace { display: flex; gap: 30px; padding: 25px; max-width: 1600px; margin: 0 auto; align-items: flex-start; }
+        .panel-left { background: #ffffff; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); flex: 1; border: 1px solid #e2e8f0; }
+        .panel-right { background: #ffffff; border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); flex: 1.5; border: 1px solid #e2e8f0; position: sticky; top: 25px; height: calc(100vh - 50px); display: flex; flex-direction: column; overflow-y: auto; }
+        
+        h2 { margin-top: 0; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        label { display: block; font-weight: 600; margin-top: 15px; margin-bottom: 5px; color: #334155; font-size: 0.85rem; text-transform: uppercase; }
+        input[type="text"], select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
+        
+        .color-picker-wrapper { display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 1px solid #cbd5e1; padding: 8px; border-radius: 6px; }
+        
+        /* Instructions & Guides */
+        .instructions { background: #fffbeb; border: 1px solid #fef3c7; padding: 20px; border-radius: 8px; margin-bottom: 20px; color: #92400e; font-size: 0.9rem; }
+        .instructions b { color: #b45309; display: block; margin-bottom: 10px; font-size: 1rem; }
+        .instructions ul { margin: 0; padding-left: 20px; }
+        .instructions li { margin-bottom: 5px; font-weight: 500; }
+
+        .hosting-guide { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin-top: 25px; font-size: 0.85rem; color: #475569; }
+        .hosting-guide h3 { margin-top: 0; font-size: 1rem; color: #1e293b; margin-bottom: 10px; }
+        .hosting-guide code { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; color: #0f172a; font-family: monospace; }
+
+        #code-output { margin-top: 10px; background: #1e293b; color: #e2e8f0; font-family: monospace; padding: 15px; border-radius: 8px; height: 120px; font-size: 0.8rem; border: none; resize: none; width: 100%; box-sizing: border-box;}
+        .copy-btn { background: #0069fa; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; transition: background 0.2s; }
+        .copy-btn:hover { background: #0056cc; }
+
+        #preview-container { margin-top: 20px; flex-grow: 1; border: 1px dashed #cbd5e1; border-radius: 8px; background: #f1f5f9; min-height: 550px; overflow: hidden; position: relative; }
+        iframe { width: 100%; height: 100%; border: none; background: white; }
+    </style>
+</head>
+<body>
+
+    <header class="tool-header">
+        <div class="hero-content">
+            <h1>Vacancies List Widget Maker</h1>
+            <div class="header-divider"></div>
+            <p>Design a beautiful, responsive job board widget using your TargetConnect Vacancies RSS feed.</p>
+            <span class="badge">Universal Edition 1.0</span>
+        </div>
+    </header>
+
+    <div class="workspace">
+        <div class="panel-left">
+            <h2>⚙️ Style & Data</h2>
+            
+            <div class="instructions">
+                <b>🚨 Required TargetConnect Setup:</b>
+                In your TargetConnect Vacancies RSS settings, ensure 'Show field name' is checked for:
+                <ul>
+                    <li>Type of Opportunity</li>
+                    <li>Employer Name</li>
+                    <li>Details</li>
+                    <li>Closing Date</li>
+                </ul>
+            </div>
+
+            <label>1. TargetConnect RSS Link</label>
+            <input type="text" id="rss-url" placeholder="https://yourlink.targetconnect.net/rss/vacancies/..." oninput="updateAll()">
+
+            <label>2. Primary Accent Color</label>
+            <div class="color-picker-wrapper">
+                <input type="color" id="accent-color" value="#0069fa" oninput="updateAll()">
+                <span>Controls the card border and employer icon</span>
+            </div>
+
+            <label>3. Layout Style</label>
+            <select id="layout-style" onchange="updateAll()">
+                <option value="carousel">Horizontal Carousel (Scrollable)</option>
+                <option value="grid">Responsive Grid</option>
+                <option value="vertical">Vertical List (Stacked)</option>
+            </select>
+
+            <div class="hosting-guide">
+                <h3>💾 Hosting & Embedding Guide</h3>
+                <p>1. Copy the code below and save it as <b>vacancies-widget.html</b>.</p>
+                <p>2. Host the file securely (HTTPS) on your web server or GitHub Pages.</p>
+                <p>3. Embed it anywhere (SharePoint, Canvas, Blackboard, TargetConnect) using an iframe:<br><br>
+                <code>&lt;iframe src="YOUR_HOSTED_URL" width="100%" height="450" frameborder="0"&gt;&lt;/iframe&gt;</code></p>
+            </div>
+            
+            <h2 style="margin-top: 30px;">💾 Export Widget Code</h2>
+            <textarea id="code-output" readonly></textarea>
+            <button class="copy-btn" onclick="copyCode()">📋 Copy Widget HTML Code</button>
+        </div>
+
+        <div class="panel-right">
+            <h2>👀 Live Visual Preview</h2>
+            <div id="preview-container">
+                <iframe id="preview-iframe"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getContrast(hexconf) {
+            const hex = hexconf.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+            return (yiq >= 128) ? '#1e293b' : '#ffffff';
+        }
+
+        function generateWidgetHTML() {
+            const rssLink = document.getElementById('rss-url').value;
+            const accent = document.getElementById('accent-color').value;
+            const layout = document.getElementById('layout-style').value;
+            const accentText = getContrast(accent);
+
+            // Determine Layout CSS
+            let layoutCSS = '';
+            if (layout === 'carousel') {
+                layoutCSS = `
+        .feed-wrapper { overflow-x: auto; padding-bottom: 20px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+        .feed-wrapper::-webkit-scrollbar { height: 8px; }
+        .feed-wrapper::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+        .feed-wrapper::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
+        .vacancies-track { display: flex; gap: 20px; flex-wrap: nowrap; }
+        .vacancy-card { min-width: 320px; max-width: 320px; flex-shrink: 0; }
+                `;
+            } else if (layout === 'grid') {
+                layoutCSS = `
+        .vacancies-track { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+                `;
+            } else if (layout === 'vertical') {
+                layoutCSS = `
+        .vacancies-track { display: flex; flex-direction: column; gap: 20px; max-width: 800px; margin: 0 auto; }
+                `;
+            }
+
+            return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacancies RSS Widget</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: transparent; margin: 0; padding: 20px 10px; }
+        
+        .vacancies-container { max-width: 1200px; margin: 0 auto; }
+        
+        /* Layout Specifics */
+${layoutCSS}
+
+        /* Vacancy Card Design */
+        .vacancy-card {
+            background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0;
+            border-left: 6px solid ${accent}; padding: 20px; text-decoration: none;
+            display: flex; flex-direction: column; gap: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .vacancy-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px rgba(0,0,0,0.08); border-color: #cbd5e1; }
+
+        .card-header { display: flex; gap: 15px; align-items: flex-start; }
+        
+        .employer-icon { 
+            width: 45px; height: 45px; flex-shrink: 0; border-radius: 8px; 
+            background: ${accent}; color: ${accentText}; display: flex; align-items: center; 
+            justify-content: center; font-size: 1.4rem; font-weight: 800; text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header-text { display: flex; flex-direction: column; gap: 4px; }
+        .employer-name { font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .vacancy-title { margin: 0; font-size: 1.1rem; font-weight: 700; color: #1e293b; line-height: 1.3; }
+
+        .pill-container { display: flex; flex-wrap: wrap; gap: 10px; }
+        .pill { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .pill-type { background: #e0e7ff; color: #3730a3; }
+        .pill-deadline { background: #fee2e2; color: #991b1b; }
+
+        .vacancy-desc { color: #475569; font-size: 0.95rem; line-height: 1.5; margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .loading { text-align: center; color: #64748b; font-size: 1rem; width: 100%; padding: 40px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <div class="vacancies-container feed-wrapper">
+        <div class="vacancies-track" id="vacancies-track">
+            <div class="loading">Loading vacancies...</div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchVacancies() {
+            const rssInput = '${rssLink}';
+            const track = document.getElementById('vacancies-track');
+            
+            if(!rssInput) {
+                track.innerHTML = '<div class="loading">Enter your Vacancies RSS URL to display jobs.</div>';
+                return;
+            }
+
+            const proxyUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(rssInput);
+
+            try {
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+                if (data && data.items && data.items.length > 0) {
+                    renderVacancies(data.items, track);
+                } else {
+                    track.innerHTML = '<div class="loading">No current vacancies found.</div>';
+                }
+            } catch (error) {
+                console.error("Error fetching RSS:", error);
+                track.innerHTML = '<div class="loading" style="color: #ef4444;">Unable to load vacancies. Check feed URL.</div>';
+            }
+        }
+
+        function renderVacancies(items, track) {
+            track.innerHTML = ''; 
+
+            items.forEach(item => {
+                const dDoc = new DOMParser().parseFromString(item.description, "text/html");
+                
+                let employer = "Employer";
+                let oppType = "Opportunity";
+                let deadline = "Open";
+                let details = "";
+
+                // TargetConnect Specific HTML Parsing
+                const labels = dDoc.querySelectorAll('.feed-entry-label');
+                labels.forEach(label => {
+                    const txt = label.textContent.toLowerCase();
+                    const parent = label.parentElement;
+                    const valNode = parent.querySelector('.feed-entry-value');
+
+                    if (txt.includes('employer name')) {
+                        employer = valNode ? valNode.textContent.trim() : "Unknown Employer";
+                    }
+                    if (txt.includes('type of opportunity')) {
+                        oppType = valNode ? valNode.textContent.trim() : "Opportunity";
+                    }
+                    if (txt.includes('closing date')) {
+                        deadline = valNode ? valNode.textContent.trim() : "Ongoing";
+                        // Simplify time output if it includes it
+                        if(deadline.includes(' at ')) deadline = deadline.split(' at ')[0];
+                    }
+                    if (txt.includes('details')) {
+                        if (valNode) {
+                            details = valNode.textContent.trim();
+                        } else {
+                            label.remove(); 
+                            details = parent.textContent.trim();
+                        }
+                        details = details.replace(/^:\\s*/, '').trim();
+                    }
+                });
+
+                if (details.startsWith(':')) details = details.substring(1).trim();
+                if (!details) details = "Click to view full job description and application details.";
+
+                const card = document.createElement('a');
+                card.href = item.link;
+                card.target = "_blank";
+                card.className = 'vacancy-card';
+
+                const initial = employer.charAt(0).toUpperCase();
+
+                card.innerHTML = \`
+                    <div class="card-header">
+                        <div class="employer-icon">\${initial}</div>
+                        <div class="header-text">
+                            <div class="employer-name">\${employer}</div>
+                            <h3 class="vacancy-title">\${item.title}</h3>
+                        </div>
+                    </div>
+                    <div class="pill-container">
+                        <span class="pill pill-type">💼 \${oppType}</span>
+                        <span class="pill pill-deadline">⏳ Closes \${deadline}</span>
+                    </div>
+                    <p class="vacancy-desc">\${details}</p>
+                \`;
+
+                track.appendChild(card);
+            });
+        }
+        fetchVacancies();
+    <\/script>
+</body>
+</html>`;
+        }
+
+        function updateAll() {
+            const html = generateWidgetHTML();
+            document.getElementById('code-output').value = html;
+            const iframe = document.getElementById('preview-iframe');
+            iframe.srcdoc = html;
+        }
+
+        function copyCode() {
+            const copyText = document.getElementById("code-output");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Code copied! Ready to be saved as an HTML file.");
+        }
+        
+        updateAll();
+    </script>
+</body>
+</html>
