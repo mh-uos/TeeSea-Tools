@@ -6,7 +6,7 @@ Welcome to the **TargetConnect Community Tools** repository. This is an open-sou
 
 ## 🚀 Live Access
 You can access the hosted, ready-to-use versions of these tools here:
-👉 **[View the Community Hub](https://mh-uos.github.io/Target-Connect-Tools/)**
+👉 **[View the Community Hub](https://mh-uos.github.io/TargetConnect-Tools/)**
 
 ---
 
