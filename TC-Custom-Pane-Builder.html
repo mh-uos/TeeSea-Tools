@@ -554,13 +554,15 @@
 
             let vCode = "\n";
             allUsedTags.forEach(tag => { vCode += `#set($${safeVarName(tag)} = false)\n`; });
+            
+            // ADDED THE MISSING #end RIGHT HERE FOR THE #if STATEMENT
             vCode += `\n\n#foreach($tag in $user.Tags)\n`;
             Array.from(allUsedTags).forEach((tag, index) => {
                 const statement = index === 0 ? "#if" : "#elseif";
-                // FIX: Removed .toLowerCase() to prevent TargetConnect parsing crashes.
                 vCode += `  ${statement}($tag == '${tag}')\n    #set($${safeVarName(tag)} = true)\n`;
             });
-            vCode += `#end\n\n\n<div class="custom-pane-container">\n\n`;
+            vCode += `  #end\n#end\n\n\n<div class="custom-pane-container">\n\n`;
+            
             segmentLogics.forEach((seg, idx) => {
                 const statement = idx === 0 ? "#if" : "#elseif";
                 vCode += `${statement}(${seg.condition})\n${seg.html}\n\n`;
