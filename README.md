@@ -26,17 +26,25 @@ Design a monthly calendar view that bridges the gap between TargetConnect and st
 Ensures your internal event descriptions always look premium and professional.
 * **Functionality:** Turns raw text into highly styled, branded HTML "pills" and formatted blocks.
 
-### 4. Events & Vacancies RSS Widgets
-Plug-and-play widgets that translate standard RSS feeds into modern web components for easy iframe embedding.
+### 4. Events List Widget Maker (`event-feed-builder.html`)
+Turn your Events RSS feed into a sleek, responsive card widget. 
+* **Layouts:** Choose between a horizontal carousel, a grid, or a vertical list layout.
+* **Integration:** Perfect for embedding into VLEs like Canvas or Blackboard via an iframe.
+
+### 5. Vacancies List Widget Maker (`vancancies-feed-builder.html`)
+Turn your Vacancies RSS feed into a modern, responsive job board widget.
+* **Features:** Dynamic deadline tracking, employer initial icons, and customizable color schemes.
+* **Flexibility:** Generates an indestructible HTML file ready to be hosted and embedded anywhere.
 
 ---
 
 ## 📖 How to Use
 
 1. Visit the **[Live Hub](https://mh-ous.github.io/Target-Connect-Tools/)**.
-2. For Maker tools: Configure your settings, paste your RSS link (if required), and click **Copy Code**.
-3. For builders outputting a file (like the Calendar): Save the code as `index.html` and host it on a secure server (HTTPS).
-4. Contact your IT team for assistance with hosting if required.
+2. For Maker tools: Configure your settings, paste your RSS link (if required), and click **Copy Widget HTML Code**.
+3. Save the generated code as an `.html` file (e.g., `index.html` or `widget.html`).
+4. Host the file securely on a web server (HTTPS) or GitHub Pages.
+5. Embed the hosted URL anywhere using an `iframe`. Contact your IT team for assistance with hosting if required.
 
 ---
 
@@ -46,7 +54,7 @@ This project is licensed under the **Creative Commons Attribution-NonCommercial 
 
 **What this means:**
 - ✅ **Universities & Staff:** You are free to use, modify, and share these tools for your institution's internal use.
-- ❌ **Commercial Entities:** Use of this code within commercial products or for-profit services is strictly prohibited without a separate commercial agreement.
+- ❌ **Commercial Entities:** Use of this code within commercial products, for-profit services, or by third-party platform providers is strictly prohibited without a separate commercial agreement.
 
 ---
 
@@ -54,4 +62,4 @@ This project is licensed under the **Creative Commons Attribution-NonCommercial 
 
 Maintainer: **Mike Henson** Email: [mike.henson@sunderland.ac.uk](mailto:mike.henson@sunderland.ac.uk)  
 
-*Disclaimer: These tools are independent resources and are not officially affiliated with GTI or the TargetConnect platform.*
+*Disclaimer: These tools are independent resources and are not officially affiliated with GTI or the Target Connect Platform.*
