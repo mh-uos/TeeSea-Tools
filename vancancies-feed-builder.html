@@ -55,7 +55,7 @@
             <h1>Vacancies List Widget Maker</h1>
             <div class="header-divider"></div>
             <p>Design a beautiful, responsive job board widget using your TargetConnect Vacancies RSS feed.</p>
-            <span class="badge">Universal Edition 1.0</span>
+            <span class="badge">Universal Edition 1.1</span>
         </div>
     </header>
 
@@ -70,8 +70,7 @@
                     <li>Type of Opportunity</li>
                     <li>Employer Name</li>
                     <li>Details</li>
-                    <li>Closing Date</li>
-                </ul>
+                    <li>Expiry Date</li> </ul>
             </div>
 
             <label>1. TargetConnect RSS Link</label>
@@ -205,14 +204,14 @@ ${layoutCSS}
                 const data = await response.json();
                 
                 if (data && data.items && data.items.length > 0) {
-                    // Sorting logic: Closest deadline first
+                    // Sorting logic: Closest Expiry Date first
                     const sortedItems = data.items.map(item => {
                         const dDoc = new DOMParser().parseFromString(item.description, "text/html");
                         let dateVal = 8640000000000000; // Far future fallback
                         const labels = dDoc.querySelectorAll('.feed-entry-label');
                         
                         labels.forEach(l => {
-                            if (l.textContent.toLowerCase().includes('closing date')) {
+                            if (l.textContent.toLowerCase().includes('expiry date')) {
                                 const v = l.parentElement.querySelector('.feed-entry-value');
                                 if (v) {
                                     // Clean formatting like "29-Jan-2027 at 23:59"
@@ -250,14 +249,14 @@ ${layoutCSS}
                     
                     if (txt.includes('employer name')) employer = valNode ? valNode.textContent.trim() : "Employer";
                     if (txt.includes('type of opportunity')) oppType = valNode ? valNode.textContent.trim() : "Opportunity";
-                    if (txt.includes('closing date')) {
+                    if (txt.includes('expiry date')) {
                         deadline = valNode ? valNode.textContent.trim() : "Ongoing";
                         // Simplify time output for the pill
                         if(deadline.includes(' at ')) deadline = deadline.split(' at ')[0];
                     }
                     if (txt.includes('details')) {
                         details = valNode ? valNode.textContent.trim() : label.parentElement.textContent.replace(label.textContent, '').trim();
-                        details = details.replace(/^:\\s*/, '').trim();
+                        details = details.replace(/^:\s*/, '').trim();
                     }
                 });
 
